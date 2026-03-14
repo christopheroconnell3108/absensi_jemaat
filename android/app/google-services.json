@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "121226098055",
+    "project_id": "absensi-jemaat-f4982",
+    "storage_bucket": "absensi-jemaat-f4982.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:121226098055:android:5640ca6eb327a1118fcf22",
+        "android_client_info": {
+          "package_name": "com.example.absensi_jemaat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFxsvUqKKlSIW202K5WhtwmHOvknOa6Qs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

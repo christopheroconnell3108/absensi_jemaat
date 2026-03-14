@@ -11,6 +11,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 bool get _supportsPushNotifications => !kIsWeb;
+WebHtmlElementStrategy get _webImageStrategy =>
+    kIsWeb ? WebHtmlElementStrategy.prefer : WebHtmlElementStrategy.never;
 
 void main() async {
   // Pastikan inisialisasi Firebase dilakukan sebelum runApp
@@ -457,6 +459,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: Image.network(
                             _normalizeImageUrl(url),
                             fit: BoxFit.contain,
+                            webHtmlElementStrategy: _webImageStrategy,
                             errorBuilder: (_, __, ___) =>
                                 const SizedBox.shrink(),
                           ),
@@ -553,6 +556,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: 70,
                           height: 70,
                           fit: BoxFit.cover,
+                          webHtmlElementStrategy: _webImageStrategy,
                           errorBuilder: (_, __, ___) =>
                               const SizedBox(width: 70, height: 70),
                         ),
@@ -707,6 +711,7 @@ class DetailBeritaPage extends StatelessWidget {
               Uri.encodeFull((item['gambar'] ?? '').toString()),
               width: double.infinity,
               fit: BoxFit.fitWidth,
+              webHtmlElementStrategy: _webImageStrategy,
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),

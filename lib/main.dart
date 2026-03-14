@@ -31,7 +31,14 @@ String resolveImageUrl(dynamic rawUrl) {
     return normalized;
   }
 
-  return '/img-proxy?url=${Uri.encodeQueryComponent(normalized)}';
+  if (uri.host == 'gbisuropatimalang.com' &&
+      uri.path.startsWith('/assets/images/')) {
+    final proxiedPath = uri.path.replaceFirst('/assets/images/', '');
+    final query = uri.hasQuery ? '?${uri.query}' : '';
+    return '/img-proxy/$proxiedPath$query';
+  }
+
+  return normalized;
 }
 
 void main() async {

@@ -36,6 +36,14 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <script src="flutter_bootstrap.js" async></script>
+  <script>
+    // Force fresh bootstrap load to avoid stale JS after deploy.
+    (function () {
+      var script = document.createElement('script');
+      script.src = 'flutter_bootstrap.js?v=' + Date.now();
+      script.async = true;
+      document.body.appendChild(script);
+    })();
+  </script>
 </body>
 </html>

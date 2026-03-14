@@ -39,6 +39,12 @@ class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
   bool _isPinObscured = true;
 
+  String _normalizeImageUrl(dynamic rawUrl) {
+    final url = (rawUrl ?? '').toString().trim();
+    if (url.isEmpty) return '';
+    return Uri.encodeFull(url);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -448,7 +454,12 @@ class _LoginPageState extends State<LoginPage> {
                         (url) => Container(
                           width: double.infinity,
                           color: Colors.black,
-                          child: Image.network(url, fit: BoxFit.contain),
+                          child: Image.network(
+                            _normalizeImageUrl(url),
+                            fit: BoxFit.contain,
+                            errorBuilder: (_, __, ___) =>
+                                const SizedBox.shrink(),
+                          ),
                         ),
                       )
                       .toList(),
@@ -538,10 +549,12 @@ class _LoginPageState extends State<LoginPage> {
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.network(
-                          item['gambar'],
+                          _normalizeImageUrl(item['gambar']),
                           width: 70,
                           height: 70,
                           fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) =>
+                              const SizedBox(width: 70, height: 70),
                         ),
                       ),
                       title: Text(
@@ -691,7 +704,7 @@ class DetailBeritaPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
-              item['gambar'],
+              Uri.encodeFull((item['gambar'] ?? '').toString()),
               width: double.infinity,
               fit: BoxFit.fitWidth,
             ),

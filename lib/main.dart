@@ -14,6 +14,26 @@ bool get _supportsPushNotifications => !kIsWeb;
 WebHtmlElementStrategy get _webImageStrategy =>
     kIsWeb ? WebHtmlElementStrategy.prefer : WebHtmlElementStrategy.never;
 
+String normalizeImageUrl(dynamic rawUrl) {
+  final url = (rawUrl ?? '').toString().trim();
+  if (url.isEmpty) return '';
+  return Uri.encodeFull(url);
+}
+
+String resolveImageUrl(dynamic rawUrl) {
+  final normalized = normalizeImageUrl(rawUrl);
+  if (normalized.isEmpty || !kIsWeb) {
+    return normalized;
+  }
+
+  final uri = Uri.tryParse(normalized);
+  if (uri == null || !uri.hasScheme || uri.host.isEmpty) {
+    return normalized;
+  }
+
+  return '/img-proxy?url=${Uri.encodeQueryComponent(normalized)}';
+}
+
 void main() async {
   // Pastikan inisialisasi Firebase dilakukan sebelum runApp
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,12 +60,6 @@ class _LoginPageState extends State<LoginPage> {
   List listBerita = [];
   bool isLoading = false;
   bool _isPinObscured = true;
-
-  String _normalizeImageUrl(dynamic rawUrl) {
-    final url = (rawUrl ?? '').toString().trim();
-    if (url.isEmpty) return '';
-    return Uri.encodeFull(url);
-  }
 
   @override
   void initState() {
@@ -457,7 +471,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           color: Colors.black,
                           child: Image.network(
-                            _normalizeImageUrl(url),
+                            resolveImageUrl(url),
                             fit: BoxFit.contain,
                             webHtmlElementStrategy: _webImageStrategy,
                             errorBuilder: (_, __, ___) =>
@@ -552,7 +566,7 @@ class _LoginPageState extends State<LoginPage> {
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
                         child: Image.network(
-                          _normalizeImageUrl(item['gambar']),
+                          resolveImageUrl(item['gambar']),
                           width: 70,
                           height: 70,
                           fit: BoxFit.cover,
@@ -708,7 +722,7 @@ class DetailBeritaPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.network(
-              Uri.encodeFull((item['gambar'] ?? '').toString()),
+              resolveImageUrl(item['gambar']),
               width: double.infinity,
               fit: BoxFit.fitWidth,
               webHtmlElementStrategy: _webImageStrategy,
